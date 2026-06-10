@@ -80,6 +80,7 @@
   <body>
     <div class="container">
       <h2>Calculador LAR a denegar</h2>
+      <p>Plazo Maximo para solicitarla: 30/06/2026</p>
 
       <div class="form-group">
         <label>Fecha de inicio (Fija):</label>
@@ -100,9 +101,8 @@
       </div>
 
       <div class="form-group">
-        <label for="dias"
-          >Cantidad de días LAR Pendientes de Usufructuar:</label
-        >
+        <label for="dias">Cantidad de días LAR no Usufructuados (*):</label>
+
         <input type="number" id="dias" min="1" placeholder="Ej. 10" required />
       </div>
 
@@ -111,6 +111,11 @@
       <div class="result" id="resultadoBox">
         <p>Fecha final LAR: <span id="fechaFinal"></span></p>
       </div>
+      <br />
+      <p for="dias">
+        (*) Se puede consultar saldo en: EDI=>CONSULTA=>AUSENTISMOS PENDIENTES A
+        USUFRUCTUAR=>ELEGIR LICENCIA ANUAL
+      </p>
     </div>
 
     <script>
