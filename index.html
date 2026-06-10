@@ -23,9 +23,10 @@
         width: 100%;
       }
       h2 {
-        margin-top: 0;
+        /* margin-top: 0; */
         color: #333;
         text-align: center;
+        ma
       }
       .form-group {
         margin-bottom: 20px;
@@ -75,15 +76,28 @@
         font-weight: bold;
         color: #007bff;
       }
+      img {
+        width: 20%;
+        height: 20%;
+      }
+      .tope {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h2>Calculador LAR a denegar</h2>
-      <p>Plazo Maximo para solicitarla: 30/06/2026</p>
+      <section class="tope">
+        <img src="./assets/logo.jpg" alt="" />
+        <h2>Calculadora LAR a denegar</h2>
+      </section>
+      <p>Fecha tope para solicitarla: 30/06/2026</p>
 
       <div class="form-group">
-        <label>Fecha de inicio (Fija):</label>
+        <label>Fecha de inicio LAR:</label>
         <input
           type="text"
           value="01/07/2026"
