@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Días Hábiles</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7f6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+      }
+      h2 {
+        margin-top: 0;
+        color: #333;
+        text-align: center;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #555;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+      .result {
+        margin-top: 25px;
+        padding: 15px;
+        background-color: #e9ecef;
+        border-left: 5px solid #007bff;
+        border-radius: 4px;
+        display: none;
+      }
+      .result p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #333;
+      }
+      .result span {
+        font-weight: bold;
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Calculador LAR a denegar</h2>
+
+      <div class="form-group">
+        <label>Fecha de inicio (Fija):</label>
+        <input
+          type="text"
+          value="01/07/2026"
+          disabled
+          style="
+            background-color: #e9ecef;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+          "
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="dias"
+          >Cantidad de días LAR Pendientes de Usufructuar:</label
+        >
+        <input type="number" id="dias" min="1" placeholder="Ej. 10" required />
+      </div>
+
+      <button onclick="calcularFecha()">Calcular Fecha Límite</button>
+
+      <div class="result" id="resultadoBox">
+        <p>Fecha final LAR: <span id="fechaFinal"></span></p>
+      </div>
+    </div>
+
+    <script>
+      // Listado de feriados o días no laborables específicos cargados por el usuario
+      const feriados = [
+        "2026-07-06",
+        "2026-07-09",
+        "2026-07-10",
+        "2026-08-17",
+        "2026-09-21",
+        "2026-09-30",
+        "2026-10-12",
+        "2026-11-11",
+        "2026-11-23",
+        "2026-12-07",
+        "2026-12-08",
+        "2026-12-25",
+        "2027-01-01",
+        "2027-02-08",
+        "2027-02-09",
+        "2027-03-24",
+        "2027-03-25",
+        "2027-03-26",
+      ];
+
+      function calcularFecha() {
+        const diasIngresados = parseInt(document.getElementById("dias").value);
+
+        if (isNaN(diasIngresados) || diasIngresados < 1) {
+          alert(
+            "Por favor, ingrese un número de días válido (mayor o igual a 1)."
+          );
+          return;
+        }
+
+        // Configurar la fecha inicial: 1 de Julio de 2026
+        let fechaActual = new Date(2026, 6, 1); // Mes 6 es Julio en JavaScript (0-indexed)
+        let diasContados = 0;
+
+        while (diasContados < diasIngresados) {
+          // Formatear fecha actual a formato YYYY-MM-DD para verificar feriados de forma segura
+          let anio = fechaActual.getFullYear();
+          let mes = String(fechaActual.getMonth() + 1).padStart(2, "0");
+          let dia = String(fechaActual.getDate()).padStart(2, "0");
+          let stringFecha = `${anio}-${mes}-${dia}`;
+
+          let diaSemana = fechaActual.getDay(); // 0 = Domingo, 6 = Sábado
+          let esFinDeSemana = diaSemana === 0 || diaSemana === 6;
+          let esFeriado = feriados.includes(stringFecha);
+
+          // Si no es fin de semana y tampoco es feriado, se cuenta como día hábil válido
+          if (!esFinDeSemana && !esFeriado) {
+            diasContados++;
+          }
+
+          // Si ya alcanzamos los días requeridos, no avanzamos la fecha al día siguiente
+          if (diasContados < diasIngresados) {
+            fechaActual.setDate(fechaActual.getDate() + 1);
+          }
+        }
+
+        // Formatear el resultado final a DD/MM/YYYY para mostrar en pantalla
+        let diaFinal = String(fechaActual.getDate()).padStart(2, "0");
+        let mesFinal = String(fechaActual.getMonth() + 1).padStart(2, "0");
+        let anioFinal = fechaActual.getFullYear();
+
+        document.getElementById(
+          "fechaFinal"
+        ).innerText = `${diaFinal}/${mesFinal}/${anioFinal}`;
+        document.getElementById("resultadoBox").style.display = "block";
+      }
+    </script>
+  </body>
+</html>
